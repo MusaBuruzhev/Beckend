@@ -8,7 +8,7 @@ async addProduct(req, res) {
 
     const user = await User.findById(userId);
 
-    // Проверяем, заполнены ли все обязательные данные
+
     if (
       !user.name || 
       !user.surname || 
@@ -21,12 +21,10 @@ async addProduct(req, res) {
       return res.status(400).json({ message: "Профиль пользователя заполнен не полностью" });
     }
 
-    // Проверяем, одобрены ли документы админом
     if (!user.documentsVerified) {
       return res.status(403).json({ message: "Ваши документы ещё не проверены админом" });
     }
 
-    // Обработка изображений
     let imagePaths = '';
 
     if (req.files && req.files.length > 0) {
@@ -40,7 +38,7 @@ async addProduct(req, res) {
       imagePaths = "uploads/no_img.png";
     }
 
-    // Создание машины
+ 
     const { name, description, price } = req.body;
 
     const product = new Product({
@@ -62,14 +60,33 @@ async addProduct(req, res) {
 }
 
   async getProducts(req, res) {
-    try {
-      const products = await Product.find();
-      return res.json(products);
-    } catch (e) {
-      console.log(e);
-      return res.status(500).json({ message: "Ошибка получения продуктов" });
+  try {
+    const { from, to } = req.query;
+    let query = {};
+
+    if (from && to) {
+      const startDate = new Date(from);
+      const endDate = new Date(to);
+
+      query = {
+        rentalPeriods: {
+          $not: {
+            $elemMatch: {
+              startDate: { $lte: endDate },
+              endDate: { $gte: startDate }
+            }
+          }
+        }
+      };
     }
+
+    const products = await Product.find(query);
+    return res.json(products);
+  } catch (e) {
+    console.log(e);
+    return res.status(500).json({ message: "Ошибка получения продуктов" });
   }
+}
 
   async getOneProduct(req, res) {
     try {

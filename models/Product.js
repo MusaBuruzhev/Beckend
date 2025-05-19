@@ -12,15 +12,18 @@ const Product = new Schema({
   carFuelType: { type: String },
   carSeats: { type: Number },
   carLuggage: { type: Number },
-  // Владелец машины
-   owner: { type: Schema.Types.ObjectId, ref: "User" }, // ✅ Это должно быть
+  owner: { type: Schema.Types.ObjectId, ref: "User" },
   registrationDate: { type: Date, default: Date.now },
 
+  canDeliver: { type: Boolean, default: false }, 
+  address: { type: String },                   
+  rentalPeriods: [{                           
+    startDate: Date,
+    endDate: Date
+  }]
 });
 
 module.exports = model("Product", Product);
-
-
 
 
 

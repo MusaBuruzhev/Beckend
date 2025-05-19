@@ -4,9 +4,8 @@ const router = new Router();
 const controller = require("../controllers/documentController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
-// Только для админа
-router.get("/documents", authMiddleware, controller.getDocumentsForModeration); // получить список непроверенных
-router.post("/approve/:id", authMiddleware, controller.approveDocument); // одобрить документы
-router.post("/reject/:id", authMiddleware, controller.rejectDocument); // отклонить
+router.get("/documents", authMiddleware, controller.getDocumentsForModeration); 
+router.post("/approve/:id", authMiddleware, controller.approveDocument); 
+router.post("/reject/:id", authMiddleware, controller.rejectDocument);
 
 module.exports = router;

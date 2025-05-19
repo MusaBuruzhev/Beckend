@@ -15,6 +15,6 @@ const User = new Schema({
   birthDate: { type: Date },
   drivingExperience: { type: Number },
   passportFiles: [{ type: String }],
-  documentsVerified: { type: Boolean, default: false }, // важно!
+  documentsVerified: { type: Boolean, default: false }, 
 });
 module.exports = model("User", User);

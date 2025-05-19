@@ -50,7 +50,6 @@ class authController {
       await userRole.save();
     }
 
-    // Генерируем рандомный код (4 цифры)
     const verificationCode = Math.floor(1000 + Math.random() * 9000).toString();
 
     let user = await User.findOne({ email });
@@ -83,7 +82,7 @@ class authController {
     });
 
   } catch (e) {
-    console.log(e); // 👈 Здесь должен быть точный текст ошибки
+    
     return res.status(400).json({ message: "Ошибка регистрации" });
   }
 }
@@ -98,7 +97,7 @@ async updateProfile(req, res) {
       citizenship,
       birthDate,
       drivingExperience,
-      username, // ✅ Теперь используем
+      username,
       password
     } = req.body;
 
@@ -119,7 +118,7 @@ async updateProfile(req, res) {
     if (birthDate) updatedData.birthDate = new Date(birthDate);
     if (drivingExperience) updatedData.drivingExperience = parseInt(drivingExperience, 10);
 
-    // ✅ Вот эти два поля:
+   
     if (username) updatedData.username = username;
     if (password) updatedData.password = bcrypt.hashSync(password, 8);
 

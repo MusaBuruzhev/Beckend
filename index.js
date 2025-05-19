@@ -6,7 +6,10 @@ const authRouter = require("./routes/authRoute");
 const productRoute = require("./routes/productRoute");
 const PORT = process.env.PORT || 5000;
 const documentRoute = require("./routes/documentRoute");
+const rentalRoute = require("./routes/rentalRoute"); 
 
+
+const notificationRoute = require("./routes/notificationRoute");
 
 
 const app = express({ limit: "100mb" });
@@ -18,6 +21,8 @@ app.use('/auth' , authRouter)
 app.use('/product' , productRoute)
 app.use("/uploads" , express.static("uploads"))
 app.use('/document', documentRoute);
+app.use('/rental', rentalRoute); 
+app.use('/notification', notificationRoute); 
 
 const start = async () => {
   try {

@@ -34,12 +34,10 @@ class DocumentController {
       return res.status(404).json({ message: "Пользователь не найден" });
     }
 
-    // Проверяем, что паспорт загружен
     if (!user.passportFiles || user.passportFiles.length === 0) {
       return res.status(400).json({ message: "Нет загруженных документов" });
     }
 
-    // Одобряем документы
     user.documentsVerified = true;
     await user.save();
 
@@ -64,7 +62,7 @@ class DocumentController {
       return res.status(404).json({ message: "Пользователь не найден" });
     }
 
-    // Сбрасываем документы и статус
+
     user.passportFiles = [];
     user.driverLicenseFiles = [];
     user.documentsVerified = false;
