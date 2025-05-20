@@ -1,4 +1,4 @@
-
+const User = require("../models/User");
 const Rental = require("../models/Rental");
 const Product = require("../models/Product");
 const mailer = require("../nodemailer");
@@ -14,7 +14,7 @@ async createRental(req, res) {
     const car = await Product.findById(carId);
     if (!car) return res.status(404).json({ message: "Автомобиль не найден" });
 
-
+    
     const isOverlapping = car.rentalPeriods.some(period => {
       const periodStart = new Date(period.startDate);
       const periodEnd = new Date(period.endDate);
@@ -83,10 +83,10 @@ async createRental(req, res) {
       rental
     });
 
-  } catch (e) {
-    console.error(e);
-    return res.status(500).json({ message: "Ошибка создания аренды" });
-  }
+    } catch (e) {
+        console.error("Ошибка создания аренды:", e.message); // <-- это покажет проблему
+        return res.status(500).json({ message: "Ошибка создания аренды" });
+    }
 }
 
   async payRental(req, res) {

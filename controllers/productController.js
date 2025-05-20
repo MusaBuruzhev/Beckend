@@ -39,16 +39,38 @@ async addProduct(req, res) {
     }
 
  
-    const { name, description, price } = req.body;
-
-    const product = new Product({
+    const {
       name,
       description,
       price,
+      carModel,
+      carYear,
+      carColor,
+      carTransmission,
+      carFuelType,
+      carSeats,
+      carLuggage,
+      canDeliver,
+      address
+    } = req.body;
+
+   const product = new Product({
+      name,
+      description,
+      price,
+      carModel,
+      carYear,
+      carColor,
+      carTransmission,
+      carFuelType,
+      carSeats,
+      carLuggage,
+      canDeliver: canDeliver === 'true' || canDeliver === true, 
+      address,
       image: imagePaths,
       owner: userId,
     });
-
+    
     await product.save();
 
     return res.status(200).json({ message: "Машина успешно добавлена!", product });

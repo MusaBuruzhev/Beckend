@@ -10,7 +10,7 @@ router.post("/registration", [
 ], controller.reqistration);
 
 router.post("/login", controller.login);
-
+router.delete("/users/me", authMiddleware, controller.deleteMyAccount);
 
 router.post("/profile/update", authMiddleware, upload.fields([
   { name: 'passport', maxCount: 2 },

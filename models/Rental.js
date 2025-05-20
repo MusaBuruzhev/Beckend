@@ -1,5 +1,5 @@
 
-
+const User = require("../models/User");
 const { Schema, model } = require("mongoose");
 
 const rentalSchema = new Schema({

@@ -39,12 +39,15 @@ class authController {
     }
   }
 
-  async reqistration(req, res) {
+
+async reqistration(req, res) {
   try {
     const { email } = req.body;
 
-    let userRole = await Role.findOne({ value: "USER" });
+    // Получаем username из email
+    const username = email.split("@")[0]; // test@example.com → test
 
+    let userRole = await Role.findOne({ value: "USER" });
     if (!userRole) {
       userRole = new Role({ value: "USER" });
       await userRole.save();
@@ -55,10 +58,10 @@ class authController {
     let user = await User.findOne({ email });
 
     if (!user) {
-      const userRole = await Role.findOne({ value: "USER" });
       user = new User({
         email,
-        password: 'temporary', 
+        username, // ✅ Теперь устанавливаем username из email
+        password: 'temporary',
         roles: [userRole.value],
         verificationCode,
         isVerified: false
@@ -74,6 +77,7 @@ class authController {
       subject: "Код подтверждения регистрации",
       text: `Ваш код подтверждения: ${verificationCode}`,
     };
+
     mailer(message);
 
     return res.status(200).json({
@@ -82,7 +86,10 @@ class authController {
     });
 
   } catch (e) {
-    
+    if (e.code === 11000 && e.keyPattern && e.keyPattern.username) {
+      return res.status(400).json({ message: "Этот логин уже занят", field: "username" });
+    }
+    console.log(e);
     return res.status(400).json({ message: "Ошибка регистрации" });
   }
 }
@@ -319,6 +326,19 @@ async updateProfile(req, res) {
     } catch (e) {
       console.log(e);
       return res.status(500).json({ message: "Ошибка проверки кода" });
+    }
+  }
+  async deleteMyAccount(req, res) {
+    try {
+      const userId = req.user.id;
+
+   
+      await User.findByIdAndDelete(userId);
+
+      return res.status(200).json({ message: "Ваш аккаунт успешно удалён" });
+    } catch (e) {
+      console.log(e);
+      return res.status(500).json({ message: "Ошибка удаления аккаунта" });
     }
   }
 }
