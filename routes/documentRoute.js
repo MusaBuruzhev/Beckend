@@ -1,11 +1,11 @@
+
 const express = require("express");
-const Router = express.Router;
-const router = new Router();
+const router = express.Router();
+
 const controller = require("../controllers/documentController");
 const authMiddleware = require("../middlewares/authMiddleware");
 
-router.get("/documents", authMiddleware, controller.getDocumentsForModeration); 
-router.post("/approve/:id", authMiddleware, controller.approveDocument); 
-router.post("/reject/:id", authMiddleware, controller.rejectDocument);
+router.get("/documents", authMiddleware, controller.getDocumentsForModeration);
+router.patch("/documents/:id", authMiddleware, controller.updateDocumentStatus);
 
 module.exports = router;

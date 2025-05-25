@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const User = new Schema({
-  username: { type: String, unique: true }, 
+  username: { type: String, unique: true },
   email: { type: String, unique: true, required: true },
   password: { type: String },
   roles: [{ type: String, ref: "Role" }],
@@ -15,6 +15,7 @@ const User = new Schema({
   birthDate: { type: Date },
   drivingExperience: { type: Number },
   passportFiles: [{ type: String }],
-  documentsVerified: { type: Boolean, default: false }, 
+  documentsVerified: { type: Boolean, default: false },
 });
+
 module.exports = model("User", User);
